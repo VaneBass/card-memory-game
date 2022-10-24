@@ -2,7 +2,10 @@ import { defineStore } from "pinia";
 import { ref } from "vue";
 
 export const useThemeStore = defineStore("theme", () => {
-  const themeString = ref("darkTheme");
+  let localTheme = localStorage.getItem("theme");
+
+  const themeString = ref(null);
+  themeString.value = localTheme || "darkTheme";
 
   return {
     themeString,

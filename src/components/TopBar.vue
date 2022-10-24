@@ -10,18 +10,32 @@
 </template>
 
 <script setup>
-import { computed, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 import { useRoute } from "vue-router";
 import { NEl, NSwitch } from "naive-ui";
 import { useThemeStore } from "../store/themeStore";
 
 const active = ref(true);
 const route = useRoute();
+
 const themeStore = useThemeStore();
+
+// 根据本地主题决定开关位置
+onMounted(() => {
+  let theme = localStorage.getItem("theme");
+  active.value = theme === "darkTheme" ? true : false;
+});
+
+// 保存主题到本地
+function saveThemeToLocal() {
+  let theme = active.value ? "darkTheme" : "lightTheme";
+  localStorage.setItem("theme", theme);
+}
 
 // 更换主题
 function changeTheme() {
-  themeStore.themeString = active.value ? "darkTheme" : "";
+  saveThemeToLocal();
+  themeStore.themeString = active.value ? "darkTheme" : "lightTheme";
 }
 
 // 判断当前是否是游戏页面

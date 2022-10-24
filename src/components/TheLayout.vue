@@ -14,7 +14,7 @@ import { useThemeStore } from "../store/themeStore";
 const themeStore = useThemeStore();
 
 const useTheme = computed(() => {
-  return themeStore.themeString ? darkTheme : null;
+  return themeStore.themeString === "darkTheme" ? darkTheme : null;
 });
 </script>
 

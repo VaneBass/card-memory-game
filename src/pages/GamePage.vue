@@ -112,7 +112,6 @@ function shuffleCard() {
       start = Date.now();
     },
     onNegativeClick: () => {
-      console.log("ok");
       router.push("/");
     },
   });
@@ -125,8 +124,6 @@ function shuffleCard() {
   });
 
   cards.value = shuffle(cards.value);
-
-  console.log("done");
 }
 </script>
 
