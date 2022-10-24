@@ -11,7 +11,7 @@ const props = defineProps({
 });
 
 const imgSrc = computed(() => {
-  return `./src/assets/${props.content}.svg`;
+  return new URL(`../assets/${props.content}.svg`, import.meta.url).href;
 });
 </script>
 
