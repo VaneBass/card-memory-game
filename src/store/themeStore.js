@@ -5,7 +5,7 @@ export const useThemeStore = defineStore("theme", () => {
   let localTheme = localStorage.getItem("theme");
 
   const themeString = ref(null);
-  themeString.value = localTheme || "darkTheme";
+  themeString.value = localTheme || "lightTheme";
 
   return {
     themeString,

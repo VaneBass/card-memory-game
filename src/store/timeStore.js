@@ -6,7 +6,7 @@ export const useTimeStore = defineStore("time", () => {
 
   const bestTime = ref(null);
 
-  bestTime.value = localBestTime || "暂无最佳成绩";
+  bestTime.value = localBestTime || "";
 
   return {
     bestTime,

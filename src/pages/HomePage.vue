@@ -7,14 +7,19 @@
           <n-button class="start">Start</n-button>
         </transition>
       </router-link>
-      <span>你的最佳成绩: {{ `${timeSotre.bestTime} 秒` || "暂无" }} </span>
+      <span class="best-time">你的最佳成绩: {{ bestTime }} </span>
     </div>
   </div>
 </template>
 
 <script setup>
 import { NButton } from "naive-ui";
+import { computed } from "vue";
 import { useTimeStore } from "../store/timeStore";
+
+const bestTime = computed(() => {
+  return timeSotre.bestTime ? `${timeSotre.bestTime} 秒` : "暂无";
+});
 
 let timeSotre = useTimeStore();
 </script>
@@ -53,5 +58,9 @@ let timeSotre = useTimeStore();
   font-size: 20px;
   border-radius: 8px;
   cursor: pointer;
+}
+
+.content-box .main-content .best-time {
+  font-size: var(--font-size);
 }
 </style>
