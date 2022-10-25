@@ -7,28 +7,16 @@
           <n-button class="start">Start</n-button>
         </transition>
       </router-link>
+      <span>你的最佳成绩: {{ `${timeSotre.bestTime} 秒` || "暂无" }} </span>
     </div>
   </div>
 </template>
 
 <script setup>
 import { NButton } from "naive-ui";
-// import gsap from "gsap";
-// import { onBeforeRouteLeave } from "vue-router";
+import { useTimeStore } from "../store/timeStore";
 
-// function animationInOut(el) {
-//   onBeforeRouteLeave((to, from, next) => {
-//     gsap.to(el, {
-//       duration: 0.5,
-//       x: "-1000",
-//       autoAlpha: 0,
-//       ease: "power2.out",
-//       onComplete: () => {
-//         next();
-//       },
-//     });
-//   });
-// }
+let timeSotre = useTimeStore();
 </script>
 
 <style scoped>
@@ -39,9 +27,8 @@ import { NButton } from "naive-ui";
 
 .content-box .main-content {
   width: 100%;
-  height: 50%;
+  height: 60%;
   margin-top: 1rem;
-  /* background-color: bisque; */
 
   display: flex;
   flex-direction: column;

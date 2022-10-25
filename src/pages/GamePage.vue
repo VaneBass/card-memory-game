@@ -17,9 +17,10 @@
 import TheCard from "../components/TheCard.vue";
 import { NEl, useDialog } from "naive-ui";
 import { useCardStore } from "../store/cardStore";
-import { onMounted, ref } from "vue";
+import { onMounted, onUnmounted, ref } from "vue";
 import { shuffle } from "lodash-es";
 import { useRouter } from "vue-router";
+import { useTimeStore } from "../store/timeStore";
 
 let matchedCard = 0;
 let cardOne, cardTwo;
@@ -29,6 +30,8 @@ let cardStore = useCardStore();
 let cards = ref(cardStore.cards);
 cards.value = shuffle(cardStore.cards);
 
+let timeSotre = useTimeStore();
+
 let start = null;
 let end = null;
 
@@ -36,8 +39,14 @@ const router = useRouter();
 
 const dialog = useDialog();
 
+// 页面加载完成后，开始计时
 onMounted(() => {
   start = Date.now();
+});
+
+// 页面卸载时，卡片重新排序
+onUnmounted(() => {
+  shuffleCard();
 });
 
 // 卡片点击事件
@@ -73,7 +82,7 @@ function matchCards(content1, content2) {
     if (matchedCard === cards.value.length / 2) {
       end = Date.now();
       setTimeout(() => {
-        shuffleCard();
+        afterGameEnd();
         return;
       }, 1000);
     }
@@ -96,10 +105,16 @@ function matchCards(content1, content2) {
   }, 1000);
 }
 
-// 重置游戏界面，打乱卡片数组，重新计时
-function shuffleCard() {
-  matchedCard = 0;
-  cardOne = cardTwo = "";
+/*
+  一轮游戏结束后:
+  1. 保存最短时间记录
+  2. 弹出提示信息
+  3. 重新计算游戏用时
+  4. 打乱数组 
+*/
+function afterGameEnd() {
+  // 保存最短时间
+  saveBestTime();
 
   // 弹出提示
   dialog.success({
@@ -116,7 +131,31 @@ function shuffleCard() {
     },
   });
 
+  // 重置游戏时间
   start = end = null;
+
+  // 打乱卡片数组
+  shuffleCard();
+}
+
+// 保存最佳成绩
+function saveBestTime() {
+  let usedTime = (end - start) / 1000;
+  let existingTime = Number(timeSotre.bestTime);
+
+  if (existingTime) {
+    timeSotre.bestTime = usedTime < existingTime ? usedTime : existingTime;
+  } else {
+    timeSotre.bestTime = usedTime;
+  }
+
+  localStorage.setItem("bestTime", timeSotre.bestTime);
+}
+
+// 重置游戏界面，打乱卡片数组
+function shuffleCard() {
+  matchedCard = 0;
+  cardOne = cardTwo = "";
 
   cards.value.forEach((card) => {
     card.isBack = true;
