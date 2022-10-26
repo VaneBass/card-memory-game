@@ -29,9 +29,7 @@ function onLeave(el, done) {
     rotateY: -180,
     ease: "power2.out",
     // 动画结束时，触发事件
-    onComplete: () => {
-      done();
-    },
+    onComplete: done,
   });
 }
 </script>

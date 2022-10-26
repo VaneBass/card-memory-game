@@ -1,5 +1,4 @@
 <template>
-  <!-- <n-el tag="img" :src="imgSrc" alt="img" class="img" /> -->
   <n-el tag="svg" class="img">
     <use :href="`${sprite}#${content}`"></use>
   </n-el>
